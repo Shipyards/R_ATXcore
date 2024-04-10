@@ -1,7 +1,7 @@
 # Prerequisites
 *.d
 
-#temp files
+#temp data files
 *.bin
 
 #visual studio stuff
