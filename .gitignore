@@ -4,6 +4,10 @@
 #temp files
 *.bin
 
+#visual studio stuff
+*.vs
+*.sln
+
 # Compiled Object files
 *.slo
 *.lo
