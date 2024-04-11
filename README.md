@@ -1,6 +1,6 @@
 # R_ATXcore
 
-Robust_AdvancedThread
+Robust_AdvancedThread core
 
 A simple data core in C++ to simplify data handling and processing.
 
