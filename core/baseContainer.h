@@ -16,7 +16,7 @@
 
 namespace R_ATX
 {
-    // base container
+    // base container [virtual]
     class _baseContainer
     {
     public:

@@ -16,7 +16,7 @@
 
 namespace R_ATX
 {
-    // data storage class
+    // data storage class [virtual]
     class _data
     {
     public:
