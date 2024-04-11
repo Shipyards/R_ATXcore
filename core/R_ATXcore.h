@@ -14,15 +14,22 @@
    limitations under the License.
 */
 
+#include <vector.h>
+#include "data.h"
+#include "task.h"
+
 namespace R_ATX
 {
-    // base container
-    class _baseContainer
+    class R_ATXcore
     {
     public:
-        _baseContainer() = 0;
-        _serialize() = 0;
-        _deserialize() = 0;
-        ~_baseContainer() = 0;
+        //array with all data for easy acess and save/load
+        std::vector<_data> dataStack;
+        //queue with all tasks to be completed by threadpool
+        std::queue<_task> taskQueue;
+        //constructor
+        R_ATXcore();
+        //deconstructor
+        ~R_ATXcore();
     }
 }

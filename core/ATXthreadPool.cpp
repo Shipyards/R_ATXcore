@@ -15,14 +15,3 @@
 */
 
 namespace R_ATX
-{
-    // base container
-    class _baseContainer
-    {
-    public:
-        _baseContainer() = 0;
-        _serialize() = 0;
-        _deserialize() = 0;
-        ~_baseContainer() = 0;
-    }
-}

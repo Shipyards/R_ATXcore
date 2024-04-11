@@ -13,11 +13,3 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-namespace R_ATX
-{
-    class R_ATXcore
-    {
-
-    }
-}
