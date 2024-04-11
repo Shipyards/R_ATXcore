@@ -14,4 +14,17 @@
    limitations under the License.
 */
 
+#include "baseContainer.h"
+
 namespace R_ATX
+{
+    // processing container
+    class _task :
+        public _baseContainer
+    {
+    public:
+        _task() = 0;
+        _execute() = 0;
+        ~_task() = 0;
+    }
+}
