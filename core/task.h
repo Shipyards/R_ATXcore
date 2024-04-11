@@ -18,7 +18,7 @@
 
 namespace R_ATX
 {
-    // processing container
+    // processing container [virtual]
     class _task :
         public _baseContainer
     {

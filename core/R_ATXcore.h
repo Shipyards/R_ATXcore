@@ -14,7 +14,8 @@
    limitations under the License.
 */
 
-#include <vector.h>
+#include <vector>
+#include <queue>
 #include "data.h"
 #include "task.h"
 
@@ -25,8 +26,11 @@ namespace R_ATX
     public:
         //array with all data for easy acess and save/load
         std::vector<_data> dataStack;
+
         //queue with all tasks to be completed by threadpool
         std::queue<_task> taskQueue;
+        //queue mutex & conditon_variable
+        
         //constructor
         R_ATXcore();
         //deconstructor

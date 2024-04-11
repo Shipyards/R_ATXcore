@@ -14,7 +14,16 @@
    limitations under the License.
 */
 
+#include "R_ATXcore.h"
+
 namespace R_ATX
 {
-    
+    R_ATXcore::R_ATXcore()
+    {
+
+    }
+    R_ATXcore::~R_ATXcore()
+    {
+
+    }
 }
