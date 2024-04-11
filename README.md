@@ -1,4 +1,4 @@
-# R_ATcore
+# R_ATXcore
 
 Robust_AdvancedThread
 
