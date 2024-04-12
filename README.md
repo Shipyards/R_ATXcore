@@ -10,4 +10,4 @@ Basic overview
  - _task : public _baseContainer is a container to hold code to be multithreaded
  - _data : public _baseContainer is a storage class for data
  - As Fast As Possible
- - 2 Stacks; data (array of _data) and processing (array of _task)
+ - 2 Stacks; data (array of _data) and processing (queue of _task)
