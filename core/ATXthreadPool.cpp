@@ -14,7 +14,14 @@
    limitations under the License.
 */
 
+#include "ATXthreadpool.h"
+
+#include <queue>
+#include <thread>
+#include <mutex>
+#include "task.h"
+
 namespace R_ATX
 {
-    
+    ATXthreadPool::worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag)
 }
