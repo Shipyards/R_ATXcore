@@ -16,20 +16,29 @@
 
 #include <vector>
 #include <queue>
+#include <mutex>
+#include <condition_variable>
 #include "data.h"
 #include "task.h"
+#include "ATXthreadPool.h"
 
 namespace R_ATX
 {
     class R_ATXcore
     {
+    private:
+        std::condition_variable TQcv;
+        ATXthreadPool Tpool;
     public:
         //array with all data for easy acess and save/load
         std::vector<_data> dataStack;
 
         //queue with all tasks to be completed by threadpool
         std::queue<_task> taskQueue;
-        //queue mutex & conditon_variable
+        //queue mutex
+        std::mutex TQm;
+        //add a task to the task stack and notify the thread pool
+        add_task(_task);
         
         //constructor
         R_ATXcore();

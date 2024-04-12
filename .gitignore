@@ -8,6 +8,9 @@
 *.vs
 *.sln
 
+#main
+#main.cpp
+
 # Compiled Object files
 *.slo
 *.lo
