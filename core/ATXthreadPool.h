@@ -14,7 +14,18 @@
    limitations under the License.
 */
 
+
+#include <queue>
+#include <thread>
+#include <mutex>
+#include "task.h"
+
 namespace R_ATX
 {
-
+    class ATXthreadPool
+    {
+    public:
+        ATXthreadPool(int, std::queue<_task>*, std::mutex*);
+        ~ATXthreadPool();
+    };
 }

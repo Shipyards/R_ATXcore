@@ -9,7 +9,7 @@
 *.sln
 
 #main
-main.cpp
+#main.cpp
 
 # Compiled Object files
 *.slo
