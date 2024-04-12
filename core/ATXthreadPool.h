@@ -25,7 +25,7 @@ namespace R_ATX
     class ATXthreadPool
     {
     public:
-        ATXthreadPool(int, std::queue<_task>*, std::mutex*);
+        ATXthreadPool(int, std::queue<_task>*, std::mutex*, std::condition_variable*, bool*);
         ~ATXthreadPool();
     };
 }

@@ -32,11 +32,15 @@ namespace R_ATX
     public:
         //array with all data for easy acess and save/load
         std::vector<_data> dataStack;
+        //datastack mutex
+        std::mutex datamtx;
 
         //queue with all tasks to be completed by threadpool
         std::queue<_task> taskQueue;
         //queue mutex
         std::mutex TQm;
+        //condition variable for the queue
+        std::condition_variable TQcv;
         //add a task to the task stack and notify the thread pool
         add_task(_task);
         
