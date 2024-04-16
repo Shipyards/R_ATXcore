@@ -29,5 +29,5 @@ namespace R_ATX
         virtual char* _raw() = 0;
         //deconstructor
         ~_data() {};
-    }
+    };
 }

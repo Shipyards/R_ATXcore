@@ -17,15 +17,16 @@
 #include "R_ATXcore.h"
 #include "task.h"
 #include <mutex>
+#include <thread>
 #include <conditon_variable>
 
 namespace R_ATX
 {
     R_ATXcore::R_ATXcore()
     {
-        this->Tpool = new ATXthreadPool(5, &this->taskQueue, &this->TQm, &this->TQcv, &this->taskflag)
+        this->Tpool = new ATXthreadPool(5, &this->taskQueue, &this->TQm, &this->TQcv, &this->taskflag);
     }
-    R_ATXcore::add_task(_task newtask)
+    void R_ATXcore::add_task(_task newtask)
     {
         //lock on to task queue mutex
         { 
