@@ -26,7 +26,7 @@ namespace R_ATX
     {
     public:
         _task() {};
-        virtual void _execute() = 0;
+        void _execute() {};
         ~_task() {};
-    }
+    };
 }

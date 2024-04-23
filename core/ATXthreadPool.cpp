@@ -14,17 +14,59 @@
    limitations under the License.
 */
 
-#include "ATXthreadpool.h"
+#include "ATXthreadPool.h"
 
 #include <queue>
 #include <thread>
 #include <mutex>
+#include <iostream>
 #include "task.h"
 
 namespace R_ATX
 {
-    void ATXthreadPool::worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag)
+    //thread function
+    void ATXthreadPool::worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool& _runningflag)
     {
-        
+        _task _activetask;
+        while(_runningflag)
+        {
+            {
+                std::cout << "waiting\n";
+                //wait
+                std::unique_lock lk(*targetQueuemtx);
+                targetQueuecv->wait(lk, [&]{ return *_taskflag; });
+
+                //grab task
+                _activetask = targetQueue->front();
+                //pop task
+                targetQueue->pop();
+
+                //turn off flag
+                *_taskflag = false;
+            }
+            //lock gone, task aquired
+
+            //execute
+            { try{ _activetask._execute(); } 
+            catch(std::exception e) { } }
+
+            //done
+        }
+    }
+    //contructor
+    ATXthreadPool::ATXthreadPool(int numofthreads, std::queue<_task>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
+    {
+
+    }
+    // deconstructor
+    ATXthreadPool::~ATXthreadPool()
+    {
+        std::vector<std::thread*>::iterator tdeconi;
+        std::thread* holder;
+        for(tdeconi = this->threads.begin(); tdeconi != this->threads.end(); tdeconi++)
+        {
+            holder = *tdeconi;
+            holder->join();
+        }
     }
 }
