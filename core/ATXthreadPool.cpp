@@ -23,8 +23,39 @@
 
 namespace R_ATX
 {
-    void ATXthreadPool::worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag)
+    //thread function
+    void ATXthreadPool::worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool& _runningflag)
     {
+        while(_runningflag)
+        {
+            // wait until main() sends data
+            std::unique_lock lk(*targetQueuemtx);
+            targetQueuecv->wait(lk, [&]{ return _taskflag; });
         
+            // queue lock owned
+
+            //get data
+
+            // unlock
+            lk.unlock();
+            // let it go
+            targetQueuecv->notify_one();
+        }
+    }
+    //contructor
+    ATXthreadPool::ATXthreadPool(int numofthreads, std::queue<_task>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
+    {
+
+    }
+    // deconstructor
+    ATXthreadPool::~ATXthreadPool()
+    {
+        std::vector<std::thread*>::iterator tdeconi;
+        std::thread* holder;
+        for(tdeconi = this->threads.begin(); tdeconi != this->threads.end(); tdeconi++)
+        {
+            holder = *tdeconi;
+            holder->join();
+        }
     }
 }
