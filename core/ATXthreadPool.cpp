@@ -19,6 +19,7 @@
 #include <queue>
 #include <thread>
 #include <mutex>
+#include <iostream>
 #include "task.h"
 
 namespace R_ATX
@@ -26,20 +27,30 @@ namespace R_ATX
     //thread function
     void ATXthreadPool::worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool& _runningflag)
     {
+        _task _activetask;
         while(_runningflag)
         {
-            // wait until main() sends data
-            std::unique_lock lk(*targetQueuemtx);
-            targetQueuecv->wait(lk, [&]{ return _taskflag; });
-        
-            // queue lock owned
+            {
+                std::cout << "waiting\n";
+                //wait
+                std::unique_lock lk(*targetQueuemtx);
+                targetQueuecv->wait(lk, [&]{ return *_taskflag; });
 
-            //get data
+                //grab task
+                _activetask = targetQueue->front();
+                //pop task
+                targetQueue->pop();
 
-            // unlock
-            lk.unlock();
-            // let it go
-            targetQueuecv->notify_one();
+                //turn off flag
+                *_taskflag = false;
+            }
+            //lock gone, task aquired
+
+            //execute
+            { try{ _activetask._execute(); } 
+            catch(std::exception e) { } }
+
+            //done
         }
     }
     //contructor
