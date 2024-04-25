@@ -25,16 +25,16 @@
 namespace R_ATX
 {
     //thread function
-    void ATXthreadPool::worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool& _runningflag)
+    void ATXthreadPool::worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool* _killflag)
     {
         _task _activetask;
-        while(_runningflag)
+        while(!*_killflag)
         {
             {
                 std::cout << "waiting\n";
                 //wait
                 std::unique_lock lk(*targetQueuemtx);
-                targetQueuecv->wait(lk, [&]{ return *_taskflag; });
+                targetQueuecv->wait(lk, [&]{ return *_taskflag || *_killflag; });
 
                 //grab task
                 _activetask = targetQueue->front();
@@ -56,17 +56,27 @@ namespace R_ATX
     //contructor
     ATXthreadPool::ATXthreadPool(int numofthreads, std::queue<_task>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
     {
+        this->_killflag = false;
 
+        int tbuildit;
+        for (tbuildit = 0; tbuildit != numofthreads; tbuildit++)
+        {
+            this->threads.push_back(new std::thread(worker_thread, targetQueuein, targetQueuemtxin, targetQueuecvin, _taskflagin, this->_killflag));
+            std::cout << "thread init\n";
+        }
     }
     // deconstructor
     ATXthreadPool::~ATXthreadPool()
     {
+        this->_killflag = true;
+
         std::vector<std::thread*>::iterator tdeconi;
         std::thread* holder;
         for(tdeconi = this->threads.begin(); tdeconi != this->threads.end(); tdeconi++)
         {
             holder = *tdeconi;
             holder->join();
+            std::cout << "thread deconed\n";
         }
     }
 }

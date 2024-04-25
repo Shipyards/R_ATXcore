@@ -18,7 +18,7 @@
 #include "task.h"
 #include <mutex>
 #include <thread>
-#include <conditon_variable>
+#include <condition_variable>
 
 namespace R_ATX
 {
@@ -35,10 +35,10 @@ namespace R_ATX
             //workhere
             this->taskQueue.push(newtask);
 
+            //signal go
             this->taskflag = true;
         }
-        this->TQcv.notify_one();
-        
+        this->TQcv.notify_all();
     }
     R_ATXcore::~R_ATXcore()
     {
