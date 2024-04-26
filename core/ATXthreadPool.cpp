@@ -36,6 +36,9 @@ namespace R_ATX
                 std::unique_lock lk(*targetQueuemtx);
                 targetQueuecv->wait(lk, [&]{ return *_taskflag || *_killflag; });
 
+                //checks if the target is empty or the kill flag is on
+                if(targetQueue->empty() || *_killflag) {continue;}
+
                 //grab task
                 _activetask = targetQueue->front();
                 //pop task
@@ -52,6 +55,7 @@ namespace R_ATX
 
             //done
         }
+        std::cout << std::this_thread::get_id() << "terminated\n";
     }
     //contructor
     ATXthreadPool::ATXthreadPool(int numofthreads, std::queue<_task>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
@@ -62,7 +66,6 @@ namespace R_ATX
         for (tbuildit = 0; tbuildit != numofthreads; tbuildit++)
         {
             this->threads.push_back(new std::thread(worker_thread, targetQueuein, targetQueuemtxin, targetQueuecvin, _taskflagin, this->_killflag));
-            std::cout << "thread init\n";
         }
     }
     // deconstructor
@@ -76,7 +79,6 @@ namespace R_ATX
         {
             holder = *tdeconi;
             holder->join();
-            std::cout << "thread deconed\n";
         }
     }
 }
