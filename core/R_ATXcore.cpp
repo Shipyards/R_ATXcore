@@ -17,30 +17,31 @@
 #include "R_ATXcore.h"
 #include "task.h"
 #include <mutex>
-#include <conditon_variable>
+#include <thread>
+#include <condition_variable>
 
 namespace R_ATX
 {
-    R_ATXcore::R_ATXcore()
+    R_ATXcore::R_ATXcore(int tnum)
     {
-        this->Tpool = new ATXthreadPool(5, &this->taskQueue, &this->TQm, &this->TQcv, &this->taskflag)
+        this->Tpool = new ATXthreadPool(tnum, &this->taskQueue, &this->TQm, &this->TQcv, &this->taskflag);
     }
-    R_ATXcore::add_task(_task newtask)
+    void R_ATXcore::add_task(_task newtask)
     {
         //lock on to task queue mutex
         { 
-            std::lock_guard ulk(this->TQm); 
+            std::lock_guard<std::mutex> ulk(this->TQm); 
 
             //workhere
             this->taskQueue.push(newtask);
 
+            //signal go
             this->taskflag = true;
         }
-        this->TQcv.notify_one();
-        
+        this->TQcv.notify_all();
     }
     R_ATXcore::~R_ATXcore()
     {
-
+        delete this->Tpool;
     }
 }

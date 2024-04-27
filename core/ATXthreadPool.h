@@ -13,11 +13,12 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
+#pragma once
 
 #include <queue>
 #include <thread>
 #include <mutex>
+#include <condition_variable>
 #include "task.h"
 
 namespace R_ATX
@@ -26,8 +27,10 @@ namespace R_ATX
     {
     private:
         // this is the function that will run in the threads
-        void worker_thread(std::queue<_task>*, std::mutex*, std::condition_variable*, bool*);
+        void worker_thread(std::queue<_task>*, std::mutex*, std::condition_variable*, bool*, bool*);
+        std::vector<std::thread*> threads;
     public:
+        bool _killflag;
         //constructor
         ATXthreadPool(int, std::queue<_task>*, std::mutex*, std::condition_variable*, bool*);
         //deconstructor

@@ -14,6 +14,8 @@
    limitations under the License.
 */
 
+#pragma once
+
 #include "baseContainer.h"
 
 namespace R_ATX
@@ -23,8 +25,8 @@ namespace R_ATX
         public _baseContainer
     {
     public:
-        _task() = 0;
-        _execute() = 0;
-        ~_task() = 0;
-    }
+        _task() {};
+        void _execute() {};
+        ~_task() {};
+    };
 }

@@ -13,6 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+#pragma once
+
+#include <iostream>
 
 namespace R_ATX
 {
@@ -21,10 +24,10 @@ namespace R_ATX
     {
     public:
         //constructor
-        _data() = 0;
+        _data() {};
         // get raw data
-        _raw() = 0;
+        virtual char* _raw() = 0;
         //deconstructor
-        ~_data() = 0;
-    }
+        ~_data() {};
+    };
 }

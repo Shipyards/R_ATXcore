@@ -20,9 +20,9 @@ namespace R_ATX
     class _baseContainer
     {
     public:
-        _baseContainer() = 0;
-        _serialize() = 0;
-        _deserialize() = 0;
-        ~_baseContainer() = 0;
-    }
+        _baseContainer() {};
+        char* _serialize() {};
+        char* _deserialize() {};
+        ~_baseContainer() {};
+    };
 }

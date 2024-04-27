@@ -14,6 +14,8 @@
    limitations under the License.
 */
 
+#pragma once
+
 #include <vector>
 #include <queue>
 #include <mutex>
@@ -27,8 +29,7 @@ namespace R_ATX
     class R_ATXcore
     {
     private:
-        std::condition_variable TQcv;
-        ATXthreadPool Tpool;
+        ATXthreadPool* Tpool;
     public:
         //array with all data for easy acess and save/load
         std::vector<_data> dataStack;
@@ -41,12 +42,16 @@ namespace R_ATX
         std::mutex TQm;
         //condition variable for the queue
         std::condition_variable TQcv;
+        //flag for task ready
+        bool taskflag;
+
+
         //add a task to the task stack and notify the thread pool
-        add_task(_task);
+        void add_task(_task);
         
         //constructor
-        R_ATXcore();
+        R_ATXcore(int);
         //deconstructor
         ~R_ATXcore();
-    }
+    };
 }

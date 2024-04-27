@@ -40,3 +40,9 @@
 *.exe
 *.out
 *.app
+
+# vscode stuff
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/settings.json
+/CppProperties.json
