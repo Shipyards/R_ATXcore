@@ -50,7 +50,7 @@ namespace R_ATX
         void add_task(_task);
         
         //constructor
-        R_ATXcore();
+        R_ATXcore(int);
         //deconstructor
         ~R_ATXcore();
     };

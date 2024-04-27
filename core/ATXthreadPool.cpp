@@ -27,13 +27,16 @@ namespace R_ATX
     //thread function
     void ATXthreadPool::worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool* _killflag)
     {
+        std::thread::id ID = std::this_thread::get_id();
         _task _activetask;
+
+        std::cout << ID << "initalized\n" << std::flush;
+
         while(!*_killflag)
         {
             {
-                std::cout << "waiting\n";
                 //wait
-                std::unique_lock lk(*targetQueuemtx);
+                std::unique_lock<std::mutex> lk(*targetQueuemtx);
                 targetQueuecv->wait(lk, [&]{ return *_taskflag || *_killflag; });
 
                 //checks if the target is empty or the kill flag is on
@@ -55,7 +58,7 @@ namespace R_ATX
 
             //done
         }
-        std::cout << std::this_thread::get_id() << "terminated\n";
+        std::cout << ID << "terminated\n" << std::flush;
     }
     //contructor
     ATXthreadPool::ATXthreadPool(int numofthreads, std::queue<_task>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
