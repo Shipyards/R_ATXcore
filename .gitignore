@@ -42,7 +42,8 @@
 *.app
 
 # vscode stuff
-.vscode/c_cpp_properties.json
-.vscode/launch.json
-.vscode/settings.json
-/CppProperties.json
+.vscode*
+
+# visual studio stuff
+*.sln
+*.vcxproj*
