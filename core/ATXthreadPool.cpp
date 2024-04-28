@@ -22,10 +22,17 @@
 #include <iostream>
 #include "task.h"
 
+
+
+
 namespace R_ATX
 {
+    void test(int b)
+    {
+        std::cout << "hi\n" << std::flush;
+    }
     //thread function
-    void ATXthreadPool::worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool* _killflag)
+    void worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool* _killflag)
     {
         std::thread::id ID = std::this_thread::get_id();
         _task _activetask;
@@ -63,12 +70,14 @@ namespace R_ATX
     //contructor
     ATXthreadPool::ATXthreadPool(int numofthreads, std::queue<_task>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
     {
+        std::cout << "begining thread core\n" << std::flush;
+
         this->_killflag = false;
 
         int tbuildit;
         for (tbuildit = 0; tbuildit != numofthreads; tbuildit++)
         {
-            this->threads.push_back(new std::thread(worker_thread, targetQueuein, targetQueuemtxin, targetQueuecvin, _taskflagin, this->_killflag));
+            this->threads.push_back(new std::thread(worker_thread, targetQueuein, targetQueuemtxin, targetQueuecvin, _taskflagin, &this->_killflag));
         }
     }
     // deconstructor

@@ -47,3 +47,6 @@
 # visual studio stuff
 *.sln
 *.vcxproj*
+x64/
+R_ATXcore/
+

@@ -6,6 +6,7 @@
 class testTask :
 	public R_ATX::_task
 {
+public:
 	testTask()
 	{
 
