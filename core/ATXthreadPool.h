@@ -28,12 +28,12 @@ namespace R_ATX
     private:
         std::vector<std::thread*> threads;
     public:
-        // this is the function that will run in the threads
-        //static void worker_thread(std::queue<_task>*, std::mutex*, std::condition_variable*, bool*, bool*);
+        //pointer to queue condition variable
+        std::condition_variable* _qcv;
         //kill flag
         bool _killflag;
         //constructor
-        ATXthreadPool(int, std::queue<_task>*, std::mutex*, std::condition_variable*, bool*);
+        ATXthreadPool(int, std::queue<_task*>*, std::mutex*, std::condition_variable*, bool*);
         //deconstructor
         ~ATXthreadPool();
     };

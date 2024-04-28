@@ -13,11 +13,16 @@ int main()
 	using namespace R_ATX;
 	using namespace std;
 
-	cout << "hi world" << endl;
+	//cout << "hi world" << endl;
 
-	testTask newtask = testTask();
+	this_thread::sleep_for(chrono::seconds(1));
+
 	//add task
-	core->add_task(newtask);
+	core->add_task(&testTask());
+	//this_thread::sleep_for(chrono::milliseconds(100));
+	core->add_task(&testTask());
+	//this_thread::sleep_for(chrono::milliseconds(100));
+	core->add_task(&testTask());
 
 	this_thread::sleep_for(std::chrono::seconds(2));
 

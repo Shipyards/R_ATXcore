@@ -37,7 +37,7 @@ namespace R_ATX
         std::mutex datamtx;
 
         //queue with all tasks to be completed by threadpool
-        std::queue<_task> taskQueue;
+        std::queue<_task*> taskQueue;
         //queue mutex
         std::mutex TQm;
         //condition variable for the queue
@@ -47,7 +47,7 @@ namespace R_ATX
 
 
         //add a task to the task stack and notify the thread pool
-        void add_task(_task);
+        void add_task(_task*);
         
         //constructor
         R_ATXcore(int);

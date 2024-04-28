@@ -32,19 +32,23 @@ namespace R_ATX
         std::cout << "hi\n" << std::flush;
     }
     //thread function
-    void worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool* _killflag)
+    void worker_thread(std::queue<_task*>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool* _killflag)
     {
         std::thread::id ID = std::this_thread::get_id();
-        _task _activetask;
+        _task* _activetask;
 
-        std::cout << ID << "initalized\n" << std::flush;
+        std::cout << ID << " initalized\n" << std::flush;
 
         while(!*_killflag)
         {
             {
+                //std::cout << "waiting\n" << std::flush;
+
                 //wait
                 std::unique_lock<std::mutex> lk(*targetQueuemtx);
                 targetQueuecv->wait(lk, [&]{ return *_taskflag || *_killflag; });
+
+                //std::cout << "done waiting\n" << std::flush;
 
                 //checks if the target is empty or the kill flag is on
                 if(targetQueue->empty() || *_killflag) {continue;}
@@ -60,15 +64,15 @@ namespace R_ATX
             //lock gone, task aquired
 
             //execute
-            { try{ _activetask._execute(); } 
-            catch(std::exception e) { } }
+            try { _activetask->_execute(); }
+            catch(std::exception e) { }
 
             //done
         }
-        std::cout << ID << "terminated\n" << std::flush;
+        std::cout << ID << " terminated\n" << std::flush;
     }
     //contructor
-    ATXthreadPool::ATXthreadPool(int numofthreads, std::queue<_task>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
+    ATXthreadPool::ATXthreadPool(int numofthreads, std::queue<_task*>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
     {
         std::cout << "begining thread core\n" << std::flush;
 
@@ -79,11 +83,15 @@ namespace R_ATX
         {
             this->threads.push_back(new std::thread(worker_thread, targetQueuein, targetQueuemtxin, targetQueuecvin, _taskflagin, &this->_killflag));
         }
+
+        this->_qcv = targetQueuecvin;
     }
     // deconstructor
     ATXthreadPool::~ATXthreadPool()
     {
         this->_killflag = true;
+
+        this->_qcv->notify_all();
 
         std::vector<std::thread*>::iterator tdeconi;
         std::thread* holder;

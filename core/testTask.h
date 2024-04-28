@@ -17,6 +17,6 @@ public:
 	}
 	~testTask()
 	{
-
+		std::cout << "bye from task\n" << std::flush;
 	}
 };
