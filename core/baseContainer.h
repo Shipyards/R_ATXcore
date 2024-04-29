@@ -14,6 +14,8 @@
    limitations under the License.
 */
 
+#pragma once
+
 namespace R_ATX
 {
     // base container [virtual]
