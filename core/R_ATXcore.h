@@ -17,6 +17,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 #include <queue>
 #include <mutex>
 #include <condition_variable>
@@ -31,13 +32,13 @@ namespace R_ATX
     private:
         ATXthreadPool* Tpool;
     public:
-        //array with all data for easy acess and save/load
-        std::vector<_data> dataStack;
+        //array with all data & gaurds for easy acess and save/load
+        std::map<std::string, std::pair<std::mutex*, _data*>> dataStack;
         //datastack mutex
         std::mutex datamtx;
 
         //queue with all tasks to be completed by threadpool
-        std::queue<_task> taskQueue;
+        std::queue<_task*> taskQueue;
         //queue mutex
         std::mutex TQm;
         //condition variable for the queue
@@ -47,7 +48,12 @@ namespace R_ATX
 
 
         //add a task to the task stack and notify the thread pool
-        void add_task(_task);
+        void add_task(_task*);
+
+        //add data to the stack
+        void add_data(_data*);
+    
+        void fetch_data(std::string GUID);
         
         //constructor
         R_ATXcore(int);

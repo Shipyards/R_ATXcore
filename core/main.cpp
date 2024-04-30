@@ -4,6 +4,8 @@
 #include "R_ATXcore.h"
 #include "testTask.h"
 
+#include <iostream>
+
 R_ATX::R_ATXcore* core = new R_ATX::R_ATXcore(7);
 
 int main()
@@ -11,7 +13,26 @@ int main()
 	using namespace R_ATX;
 	using namespace std;
 
-	cout << "hi world" << endl;
+	//cout << "hi world" << endl;
+
+	this_thread::sleep_for(chrono::seconds(1));
+
+	testTask test1 = testTask();
+	testTask test2 = testTask();
+	testTask test3 = testTask();
+
+	//add task
+	core->add_task(&test1);
+	//this_thread::sleep_for(chrono::milliseconds(100));
+	core->add_task(&test2);
+	//this_thread::sleep_for(chrono::milliseconds(100));
+	core->add_task(&test3);
+
+	this_thread::sleep_for(std::chrono::seconds(2));
+
+	cout << "bye\n";
+
+	delete core;
 }
 
 

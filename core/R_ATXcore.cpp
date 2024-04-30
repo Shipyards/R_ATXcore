@@ -24,9 +24,10 @@ namespace R_ATX
 {
     R_ATXcore::R_ATXcore(int tnum)
     {
+        this->taskflag = false;
         this->Tpool = new ATXthreadPool(tnum, &this->taskQueue, &this->TQm, &this->TQcv, &this->taskflag);
     }
-    void R_ATXcore::add_task(_task newtask)
+    void R_ATXcore::add_task(_task* newtask)
     {
         //lock on to task queue mutex
         { 

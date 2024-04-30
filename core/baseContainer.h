@@ -14,6 +14,8 @@
    limitations under the License.
 */
 
+#pragma once
+
 namespace R_ATX
 {
     // base container [virtual]
@@ -21,8 +23,8 @@ namespace R_ATX
     {
     public:
         _baseContainer() {};
-        char* _serialize() {};
-        char* _deserialize() {};
+        virtual char* _serialize() = 0;
+        virtual void _deserialize(char*) = 0;
         ~_baseContainer() {};
     };
 }

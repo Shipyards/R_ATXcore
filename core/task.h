@@ -17,6 +17,7 @@
 #pragma once
 
 #include "baseContainer.h"
+#include <iostream>
 
 namespace R_ATX
 {
@@ -25,8 +26,8 @@ namespace R_ATX
         public _baseContainer
     {
     public:
-        _task() {};
-        void _execute() {};
-        ~_task() {};
+        _task() {}
+        virtual void _execute() = 0;
+        ~_task() {}
     };
 }

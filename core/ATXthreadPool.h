@@ -26,13 +26,14 @@ namespace R_ATX
     class ATXthreadPool
     {
     private:
-        // this is the function that will run in the threads
-        void worker_thread(std::queue<_task>*, std::mutex*, std::condition_variable*, bool*, bool*);
         std::vector<std::thread*> threads;
     public:
+        //pointer to queue condition variable
+        std::condition_variable* _qcv;
+        //kill flag
         bool _killflag;
         //constructor
-        ATXthreadPool(int, std::queue<_task>*, std::mutex*, std::condition_variable*, bool*);
+        ATXthreadPool(int, std::queue<_task*>*, std::mutex*, std::condition_variable*, bool*);
         //deconstructor
         ~ATXthreadPool();
     };
