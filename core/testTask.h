@@ -11,6 +11,8 @@ public:
 	{
 
 	}
+	char* _serialize() {};
+	void _deserialize(char* raw) {};
 	void _execute()
 	{
 		std::cout << "yo mama\n" << std::flush;
