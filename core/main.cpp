@@ -1,8 +1,8 @@
 // test
 
 
-#include "R_ATXcore.h"
-#include "testTask.h"
+#include "R_ATXcore.hpp"
+#include "testTask.hpp"
 
 #include <iostream>
 

@@ -14,8 +14,8 @@
    limitations under the License.
 */
 
-#include "R_ATXcore.h"
-#include "task.h"
+#include "R_ATXcore.hpp"
+#include "task.hpp"
 #include <mutex>
 #include <thread>
 #include <condition_variable>
@@ -43,6 +43,6 @@ namespace R_ATX
     }
     R_ATXcore::~R_ATXcore()
     {
-        delete this->Tpool;
+        delete this->Tpool; // delete threadpool before deleting data
     }
 }

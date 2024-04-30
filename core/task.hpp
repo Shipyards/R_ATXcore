@@ -13,28 +13,21 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
 #pragma once
 
-#include <queue>
-#include <thread>
-#include <mutex>
-#include <condition_variable>
-#include "task.h"
+#include "baseContainer.hpp"
+#include <iostream>
 
 namespace R_ATX
 {
-    class ATXthreadPool
+    // processing container [virtual]
+    class _task :
+        public _baseContainer
     {
-    private:
-        std::vector<std::thread*> threads;
     public:
-        //pointer to queue condition variable
-        std::condition_variable* _qcv;
-        //kill flag
-        bool _killflag;
-        //constructor
-        ATXthreadPool(int, std::queue<_task*>*, std::mutex*, std::condition_variable*, bool*);
-        //deconstructor
-        ~ATXthreadPool();
+        _task() {}
+        virtual void _execute() = 0;
+        ~_task() {}
     };
 }

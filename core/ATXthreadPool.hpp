@@ -15,19 +15,26 @@
 */
 #pragma once
 
-#include <iostream>
+#include <queue>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include "task.hpp"
 
 namespace R_ATX
 {
-    // data storage class [virtual]
-    class _data
+    class ATXthreadPool
     {
+    private:
+        std::vector<std::thread*> threads;
     public:
+        //pointer to queue condition variable
+        std::condition_variable* _qcv;
+        //kill flag
+        bool _killflag;
         //constructor
-        _data() {};
-        // get raw data
-        virtual char* _raw() = 0;
+        ATXthreadPool(int, std::queue<_task*>*, std::mutex*, std::condition_variable*, bool*);
         //deconstructor
-        ~_data() {};
+        ~ATXthreadPool();
     };
 }

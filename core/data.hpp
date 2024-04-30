@@ -13,21 +13,23 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 #pragma once
 
-#include "baseContainer.h"
 #include <iostream>
+#include "baseContainer.hpp"
 
 namespace R_ATX
 {
-    // processing container [virtual]
-    class _task :
+    // data storage class [virtual]
+    class _data :
         public _baseContainer
     {
     public:
-        _task() {}
-        virtual void _execute() = 0;
-        ~_task() {}
+        //constructor
+        _data() {};
+        // get raw data
+        virtual char* _raw() = 0;
+        //deconstructor
+        ~_data() {};
     };
 }

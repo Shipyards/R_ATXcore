@@ -14,13 +14,12 @@
    limitations under the License.
 */
 
-#include "ATXthreadPool.h"
-
+#include "ATXthreadPool.hpp"
 #include <queue>
 #include <thread>
 #include <mutex>
 #include <iostream>
-#include "task.h"
+#include "task.hpp"
 
 
 

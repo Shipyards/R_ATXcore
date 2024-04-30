@@ -21,9 +21,9 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
-#include "data.h"
-#include "task.h"
-#include "ATXthreadPool.h"
+#include "data.hpp"
+#include "task.hpp"
+#include "ATXthreadPool.hpp"
 
 namespace R_ATX
 {
