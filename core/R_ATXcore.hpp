@@ -33,7 +33,7 @@ namespace R_ATX
         ATXthreadPool* Tpool;
     public:
         //array with all data & gaurds for easy acess and save/load
-        std::map<std::string, std::pair<std::mutex*, _data*>> dataStack;
+        std::map<UID, _data*> dataStack;
         //datastack mutex
         std::mutex datamtx;
 
@@ -48,12 +48,16 @@ namespace R_ATX
 
 
         //add a task to the task stack and notify the thread pool
-        void add_task(_task*);
+        bool add_task(_task*);
 
         //add data to the stack
-        void add_data(_data*);
+        bool add_data(_data*);
     
-        void fetch_data(std::string GUID);
+        //fetch data from the stack
+        _data* fetch_data(UID);
+
+        //destroy data on the stack
+        bool remove_data(UID);
         
         //constructor
         R_ATXcore(int);

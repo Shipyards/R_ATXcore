@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include "baseContainer.hpp"
+#include "UID.hpp"
 
 namespace R_ATX
 {
@@ -25,8 +26,9 @@ namespace R_ATX
         public _baseContainer
     {
     public:
+        UID localUID;
         //constructor
-        _data() {};
+        _data() { this->localUID = UIDgen(); };
         // get raw data
         virtual char* _raw() = 0;
         //deconstructor

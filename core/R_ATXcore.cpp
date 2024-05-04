@@ -27,7 +27,7 @@ namespace R_ATX
         this->taskflag = false;
         this->Tpool = new ATXthreadPool(tnum, &this->taskQueue, &this->TQm, &this->TQcv, &this->taskflag);
     }
-    void R_ATXcore::add_task(_task* newtask)
+    bool R_ATXcore::add_task(_task* newtask)
     {
         //lock on to task queue mutex
         { 
@@ -40,6 +40,18 @@ namespace R_ATX
             this->taskflag = true;
         }
         this->TQcv.notify_all();
+        return true;
+    }
+    bool R_ATXcore::add_data(_data* newdata)
+    {
+        this->datamtx.lock();
+        this->dataStack[newdata->localUID] = newdata;
+        this->datamtx.unlock();
+        return true;
+    }
+    _data* R_ATXcore::fetch_data(UID ID)
+    {
+        
     }
     R_ATXcore::~R_ATXcore()
     {

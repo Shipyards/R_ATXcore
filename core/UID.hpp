@@ -22,10 +22,21 @@ namespace R_ATX
     {
     public:
         std::string actual;
-
+        
+        UID()
+        {
+            this->actual = UIDgen().actual;
+        }
         UID(std::string raw)
         {
             this->actual = raw;
+        }
+        bool operator==(UID const& compare)
+        {
+            if(this->actual == compare.actual)
+            {
+                return true;
+            }
         }
         ~UID()
         {
