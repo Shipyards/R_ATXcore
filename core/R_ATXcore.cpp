@@ -45,14 +45,15 @@ namespace R_ATX
     bool R_ATXcore::add_data(_data* newdata)
     {
         this->datamtx.lock();
-        this->dataStack[newdata->localUID] = newdata;
+        UID holder = UID();
+        this->dataStack[holder] = newdata;
         this->datamtx.unlock();
         return true;
     }
-    _data* R_ATXcore::fetch_data(UID ID)
+    /*_data* R_ATXcore::fetch_data(UID ID)
     {
         
-    }
+    }*/
     R_ATXcore::~R_ATXcore()
     {
         delete this->Tpool; // delete threadpool before deleting data

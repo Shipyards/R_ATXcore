@@ -28,7 +28,7 @@ namespace R_ATX
     public:
         UID localUID;
         //constructor
-        _data() { this->localUID = UIDgen(); };
+        _data() { this->localUID = *(new UID()); };
         // get raw data
         virtual char* _raw() = 0;
         //deconstructor

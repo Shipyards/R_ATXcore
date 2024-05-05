@@ -11,7 +11,7 @@ public:
 	{
 
 	}
-	char* _serialize() {};
+	char* _serialize() { return "1"; };
 	void _deserialize(char* raw) {};
 	void _execute()
 	{

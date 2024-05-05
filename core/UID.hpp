@@ -18,33 +18,7 @@
 
 namespace R_ATX
 {
-    class UID
-    {
-    public:
-        std::string actual;
-        
-        UID()
-        {
-            this->actual = UIDgen().actual;
-        }
-        UID(std::string raw)
-        {
-            this->actual = raw;
-        }
-        bool operator==(UID const& compare)
-        {
-            if(this->actual == compare.actual)
-            {
-                return true;
-            }
-        }
-        ~UID()
-        {
-
-        }
-    };
-
-    static UID UIDgen() //Note: not garunteed unique, however statistically improbable, this is experimental
+    static std::string rawUIDgen() //Note: not garunteed unique, however statistically improbable, this is experimental
     {
         const char hexTemp[16] = "0123456789ABCEF";
         std::string uniqueID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
@@ -59,6 +33,34 @@ namespace R_ATX
             }
             uniqueID[x] = hexTemp[distr(generator)];
         }
-        return UID(uniqueID);
+        return uniqueID;
     }
+
+    class UID
+    {
+    public:
+        std::string actual;
+        
+        UID()
+        {
+            this->actual = rawUIDgen();
+        }
+        UID(std::string raw)
+        {
+            this->actual = raw;
+        }
+        /*bool operator==(UID& compare)
+        {
+            if(this->actual == compare.actual)
+            {
+                return true;
+            }
+        }*/
+        ~UID()
+        {
+
+        }
+    };
+
+    
 }

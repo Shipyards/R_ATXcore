@@ -50,14 +50,14 @@ namespace R_ATX
         //add a task to the task stack and notify the thread pool
         bool add_task(_task*);
 
-        //add data to the stack
+        ////add data to the stack
         bool add_data(_data*);
     
-        //fetch data from the stack
-        _data* fetch_data(UID);
+        ////fetch data from the stack
+        //_data* fetch_data(UID);
 
-        //destroy data on the stack
-        bool remove_data(UID);
+        ////destroy data on the stack
+        //bool remove_data(UID);
         
         //constructor
         R_ATXcore(int);
