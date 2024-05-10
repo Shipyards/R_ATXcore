@@ -49,13 +49,13 @@ namespace R_ATX
         {
             this->actual = raw;
         }
-        /*bool operator==(UID& compare)
+        bool operator==(UID& compare)
         {
             if(this->actual == compare.actual)
             {
                 return true;
             }
-        }*/
+        }
         ~UID()
         {
 

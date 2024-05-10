@@ -66,6 +66,9 @@ namespace R_ATX
             try { _activetask->_execute(); }
             catch(std::exception e) { }
 
+            try { delete _activetask; std::cout << "task deleted\n"; }
+            catch (std::exception e) { std::cout << e.what() << std::endl; };
+
             //done
         }
         std::cout << ID << " terminated\n" << std::flush;

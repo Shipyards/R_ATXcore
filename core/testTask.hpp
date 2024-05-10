@@ -7,15 +7,17 @@ class testTask :
 	public R_ATX::_task
 {
 public:
-	testTask()
+	int* i;
+	testTask(int* i)
 	{
-
+		this->i = i;
+		(*this->i)++;
 	}
 	char* _serialize() { return "1"; };
 	void _deserialize(char* raw) {};
 	void _execute()
 	{
-		std::cout << "yo mama\n" << std::flush;
+		std::cout << "yo mama\n" << *this->i << std::flush;
 	}
 	~testTask()
 	{

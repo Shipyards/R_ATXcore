@@ -15,18 +15,19 @@ int main()
 
 	//cout << "hi world" << endl;
 
-	this_thread::sleep_for(chrono::seconds(1));
+	this_thread::sleep_for(chrono::seconds(2));
 
-	testTask test1 = testTask();
-	testTask test2 = testTask();
-	testTask test3 = testTask();
+	int i = 0;
 
 	//add task
-	core->add_task(&test1);
-	//this_thread::sleep_for(chrono::milliseconds(100));
-	core->add_task(&test2);
-	//this_thread::sleep_for(chrono::milliseconds(100));
-	core->add_task(&test3);
+	testTask* test1 = new testTask(&i);
+	core->add_task(test1);
+	this_thread::sleep_for(chrono::seconds(1));
+	testTask* test2 = new testTask(&i);
+	core->add_task(test2);
+	this_thread::sleep_for(chrono::seconds(1));
+	testTask* test3 = new testTask(&i);
+	core->add_task(test3);
 
 	this_thread::sleep_for(std::chrono::seconds(2));
 
