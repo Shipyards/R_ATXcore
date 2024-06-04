@@ -53,7 +53,10 @@ namespace R_ATX
                 if(targetQueue->empty() || *_killflag) {continue;}
 
                 //grab task
-                _activetask = targetQueue->front();
+                _activetask = (targetQueue->front());
+
+                //std::cout << "adress of new task in thread" << _activetask << std::endl;
+
                 //pop task
                 targetQueue->pop();
 
@@ -64,7 +67,7 @@ namespace R_ATX
 
             //execute
             try { _activetask->_execute(); }
-            catch(std::exception e) { }
+            catch(std::exception e) { std::cout << e.what() << std::endl; }
 
             try { delete _activetask; std::cout << "task deleted\n"; }
             catch (std::exception e) { std::cout << e.what() << std::endl; };

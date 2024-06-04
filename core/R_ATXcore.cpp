@@ -29,6 +29,7 @@ namespace R_ATX
     }
     bool R_ATXcore::add_task(_task* newtask)
     {
+        std::cout << "adress of new task " << newtask << std::endl;
         //lock on to task queue mutex
         { 
             std::lock_guard<std::mutex> ulk(this->TQm); 

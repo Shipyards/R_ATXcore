@@ -17,7 +17,7 @@ public:
 	void _deserialize(char* raw) {};
 	void _execute()
 	{
-		std::cout << "yo mama\n" << *this->i << std::flush;
+		std::cout << "hi\n" << *this->i << std::endl;
 	}
 	~testTask()
 	{
