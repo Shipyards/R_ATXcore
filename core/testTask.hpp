@@ -14,7 +14,7 @@ public:
 		(*this->i)++;
 	}
 	char* _serialize() { return "1"; };
-	void _deserialize(char* raw) {};
+	bool _deserialize(char* raw) {};
 	void _execute()
 	{
 		std::cout << "hi\n" << *this->i << std::endl;

@@ -24,7 +24,7 @@ namespace R_ATX
     public:
         _baseContainer() {};
         virtual char* _serialize() = 0;
-        virtual void _deserialize(char*) = 0;
+        virtual bool _deserialize(char*) = 0;
         ~_baseContainer() {};
     };
 }
