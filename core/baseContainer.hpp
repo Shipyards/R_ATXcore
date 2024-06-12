@@ -16,7 +16,7 @@
 
 #pragma once
 
-namespace R_ATX
+namespace JATX
 {
     // base container [virtual]
     class _baseContainer

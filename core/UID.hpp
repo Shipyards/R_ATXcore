@@ -16,7 +16,7 @@
 
 #include <random>
 
-namespace R_ATX
+namespace JATX
 {
     static std::string rawUIDgen() //Note: not garunteed unique, however statistically improbable, this is experimental
     {

@@ -4,7 +4,7 @@
 #include "task.hpp"
 
 class testTask :
-	public R_ATX::_task
+	public JATX::_task
 {
 public:
 	int* i;

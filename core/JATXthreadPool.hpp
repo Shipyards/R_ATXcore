@@ -21,9 +21,9 @@
 #include <condition_variable>
 #include "task.hpp"
 
-namespace R_ATX
+namespace JATX
 {
-    class ATXthreadPool
+    class JATXthreadPool
     {
     private:
         std::vector<std::thread*> threads;
@@ -33,8 +33,8 @@ namespace R_ATX
         //kill flag
         bool _killflag;
         //constructor
-        ATXthreadPool(int, std::queue<_task*>*, std::mutex*, std::condition_variable*, bool*);
+        JATXthreadPool(int, std::queue<_task*>*, std::mutex*, std::condition_variable*, bool*);
         //deconstructor
-        ~ATXthreadPool();
+        ~JATXthreadPool();
     };
 }

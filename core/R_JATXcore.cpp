@@ -14,20 +14,20 @@
    limitations under the License.
 */
 
-#include "R_ATXcore.hpp"
+#include "R_JATXcore.hpp"
 #include "task.hpp"
 #include <mutex>
 #include <thread>
 #include <condition_variable>
 
-namespace R_ATX
+namespace JATX
 {
-    R_ATXcore::R_ATXcore(int tnum)
+    R_JATXcore::R_JATXcore(int tnum)
     {
         this->taskflag = false;
-        this->Tpool = new ATXthreadPool(tnum, &this->taskQueue, &this->TQm, &this->TQcv, &this->taskflag);
+        this->Tpool = new JATXthreadPool(tnum, &this->taskQueue, &this->TQm, &this->TQcv, &this->taskflag);
     }
-    bool R_ATXcore::add_task(_task* newtask)
+    bool R_JATXcore::add_task(_task* newtask)
     {
         std::cout << "adress of new task " << newtask << std::endl;
         //lock on to task queue mutex
@@ -43,14 +43,14 @@ namespace R_ATX
         this->TQcv.notify_all();
         return true;
     }
-    bool R_ATXcore::add_data(_data* newdata)
+    bool R_JATXcore::add_data(_data* newdata)
     {
         this->datamtx.lock();
         this->dataStack[&newdata->localUID] = newdata;
         this->datamtx.unlock();
         return true;
     }
-    _data* R_ATXcore::fetch_data(UID ID)
+    _data* R_JATXcore::fetch_data(UID ID)
     {
         std::map<UID*, _data*>::iterator datait;
         for (datait = this->dataStack.begin(); datait != this->dataStack.end(); datait++)
@@ -61,7 +61,7 @@ namespace R_ATX
             }
         }
     }
-    bool R_ATXcore::remove_data(UID ID)
+    bool R_JATXcore::remove_data(UID ID)
     {
         std::map<UID*, _data*>::iterator datait;
         for (datait = this->dataStack.begin(); datait != this->dataStack.end(); datait++)
@@ -75,7 +75,7 @@ namespace R_ATX
             }
         }
     }
-    R_ATXcore::~R_ATXcore()
+    R_JATXcore::~R_JATXcore()
     {
         delete this->Tpool; // delete threadpool before deleting data
     }

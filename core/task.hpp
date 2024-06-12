@@ -19,7 +19,7 @@
 #include "baseContainer.hpp"
 #include <iostream>
 
-namespace R_ATX
+namespace JATX
 {
     // processing container [virtual]
     class _task :

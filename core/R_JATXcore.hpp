@@ -23,14 +23,14 @@
 #include <condition_variable>
 #include "data.hpp"
 #include "task.hpp"
-#include "ATXthreadPool.hpp"
+#include "JATXthreadPool.hpp"
 
-namespace R_ATX
+namespace JATX
 {
-    class R_ATXcore
+    class R_JATXcore
     {
     private:
-        ATXthreadPool* Tpool;
+        JATXthreadPool* Tpool;
     public:
         //array with all data & gaurds for easy acess and save/load
         std::map<UID*, _data*> dataStack;
@@ -60,8 +60,8 @@ namespace R_ATX
         bool remove_data(UID);
         
         //constructor
-        R_ATXcore(int);
+        R_JATXcore(int);
         //deconstructor
-        ~R_ATXcore();
+        ~R_JATXcore();
     };
 }

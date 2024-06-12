@@ -1,16 +1,16 @@
 // test
 
 
-#include "R_ATXcore.hpp"
+#include "R_JATXcore.hpp"
 #include "testTask.hpp"
 
 #include <iostream>
 
-R_ATX::R_ATXcore* core = new R_ATX::R_ATXcore(7);
+JATX::R_JATXcore* core = new JATX::R_JATXcore(7);
 
 int main()
 {
-	using namespace R_ATX;
+	using namespace JATX;
 	using namespace std;
 
 	//cout << "hi world" << endl;

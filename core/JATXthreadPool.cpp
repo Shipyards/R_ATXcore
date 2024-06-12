@@ -14,7 +14,7 @@
    limitations under the License.
 */
 
-#include "ATXthreadPool.hpp"
+#include "JATXthreadPool.hpp"
 #include <queue>
 #include <thread>
 #include <mutex>
@@ -24,7 +24,7 @@
 
 
 
-namespace R_ATX
+namespace JATX
 {
     void test(int b)
     {
@@ -77,7 +77,7 @@ namespace R_ATX
         std::cout << ID << " terminated\n" << std::flush;
     }
     //contructor
-    ATXthreadPool::ATXthreadPool(int numofthreads, std::queue<_task*>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
+    JATXthreadPool::JATXthreadPool(int numofthreads, std::queue<_task*>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
     {
         std::cout << "begining thread core\n" << std::flush;
 
@@ -92,7 +92,7 @@ namespace R_ATX
         this->_qcv = targetQueuecvin;
     }
     // deconstructor
-    ATXthreadPool::~ATXthreadPool()
+    JATXthreadPool::~JATXthreadPool()
     {
         this->_killflag = true;
 

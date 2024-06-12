@@ -19,7 +19,7 @@
 #include "baseContainer.hpp"
 #include "UID.hpp"
 
-namespace R_ATX
+namespace JATX
 {
     // data storage class [virtual]
     class _data :
