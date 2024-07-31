@@ -13,29 +13,29 @@ int main()
 	using namespace JATX;
 	using namespace std;
 
-	//cout << "hi world" << endl;
+	cout << "hi world" << endl;
 
-	//this_thread::sleep_for(chrono::seconds(1));
+	this_thread::sleep_for(chrono::seconds(1));
 
-	//int i = 0;
+	int i = 0;
 
-	////test bed for new / delete
-	//testTask* test0 = new testTask(&i);
-	//test0->_execute();
-	//delete test0;
+	//test bed for new / delete
+	testTask* test0 = new testTask(&i);
+	test0->_execute();
+	delete test0;
 
 
-	////add task
-	//testTask* test1 = new testTask(&i);
-	//core->add_task(test1);
-	//this_thread::sleep_for(chrono::seconds(1));
-	//testTask* test2 = new testTask(&i);
-	//core->add_task(test2);
-	//this_thread::sleep_for(chrono::seconds(1));
-	//testTask* test3 = new testTask(&i);
-	//core->add_task(test3);
+	//add task
+	testTask* test1 = new testTask(&i);
+	core->add_task(test1);
+	this_thread::sleep_for(chrono::seconds(1));
+	testTask* test2 = new testTask(&i);
+	core->add_task(test2);
+	this_thread::sleep_for(chrono::seconds(1));
+	testTask* test3 = new testTask(&i);
+	core->add_task(test3);
 
-	//this_thread::sleep_for(std::chrono::seconds(1));
+	this_thread::sleep_for(std::chrono::seconds(1));
 
 	delete core;
 }

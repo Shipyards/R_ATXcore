@@ -31,6 +31,10 @@ namespace JATX
         _data() { this->localUID = *(new UID()); };
         // get raw data
         virtual char* _raw() = 0;
+        //serialize
+        virtual char* _serialize() = 0;
+        //deserialize
+        virtual bool _deserialize(char*) = 0;
         //deconstructor
         ~_data() {};
     };
