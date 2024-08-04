@@ -13,21 +13,21 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
 #pragma once
 
+#include "baseContainer.hpp"
 #include <iostream>
 
-namespace R_ATX
+namespace JATX
 {
-    // data storage class [virtual]
-    class _data
+    // processing container [virtual]
+    class _task :
+        public _baseContainer
     {
     public:
-        //constructor
-        _data() {};
-        // get raw data
-        virtual char* _raw() = 0;
-        //deconstructor
-        ~_data() {};
+        _task() {}
+        virtual void _execute() = 0;
+        ~_task() {}
     };
 }

@@ -1,17 +1,42 @@
 // test
 
 
-#include "R_ATXcore.h"
-#include "testTask.h"
+#include "R_JATXcore.hpp"
+#include "testTask.hpp"
 
-R_ATX::R_ATXcore* core = new R_ATX::R_ATXcore(7);
+#include <iostream>
 
 int main()
 {
-	using namespace R_ATX;
+	using namespace JATX;
 	using namespace std;
 
 	cout << "hi world" << endl;
+
+	this_thread::sleep_for(chrono::seconds(1));
+
+	int i = 0;
+
+	//test bed for new / delete
+	testTask* test0 = new testTask(&i);
+	test0->_execute();
+	delete test0;
+
+	R_JATXcore::init_threads(4);
+
+	//add task
+	testTask* test1 = new testTask(&i);
+	R_JATXcore::add_task(test1);
+	this_thread::sleep_for(chrono::seconds(1));
+	testTask* test2 = new testTask(&i);
+	R_JATXcore::add_task(test2);
+	this_thread::sleep_for(chrono::seconds(1));
+	testTask* test3 = new testTask(&i);
+	R_JATXcore::add_task(test3);
+
+	this_thread::sleep_for(std::chrono::seconds(1));
+
+	R_JATXcore::deinit_threads();
 }
 
 

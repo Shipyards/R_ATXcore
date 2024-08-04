@@ -16,17 +16,13 @@
 
 #pragma once
 
-#include "baseContainer.h"
-
-namespace R_ATX
+namespace JATX
 {
-    // processing container [virtual]
-    class _task :
-        public _baseContainer
+    // base container [virtual]
+    class _baseContainer
     {
     public:
-        _task() {};
-        void _execute() {};
-        ~_task() {};
+        _baseContainer() {};
+        ~_baseContainer() {};
     };
 }

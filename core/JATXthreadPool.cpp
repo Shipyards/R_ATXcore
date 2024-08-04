@@ -14,36 +14,49 @@
    limitations under the License.
 */
 
-#include "ATXthreadPool.h"
-
+#include "JATXthreadPool.hpp"
 #include <queue>
 #include <thread>
 #include <mutex>
 #include <iostream>
-#include "task.h"
+#include "task.hpp"
 
-namespace R_ATX
+
+
+
+namespace JATX
 {
+    void test(int b)
+    {
+        std::cout << "hi\n" << std::flush;
+    }
     //thread function
-    void ATXthreadPool::worker_thread(std::queue<_task>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool* _killflag)
+    void worker_thread(std::queue<_task*>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool* _killflag)
     {
         std::thread::id ID = std::this_thread::get_id();
-        _task _activetask;
+        _task* _activetask;
 
-        std::cout << ID << "initalized\n" << std::flush;
+        std::cout << ID << " initalized\n" << std::flush;
 
         while(!*_killflag)
         {
             {
+                //std::cout << "waiting\n" << std::flush;
+
                 //wait
                 std::unique_lock<std::mutex> lk(*targetQueuemtx);
                 targetQueuecv->wait(lk, [&]{ return *_taskflag || *_killflag; });
+
+                //std::cout << "done waiting\n" << std::flush;
 
                 //checks if the target is empty or the kill flag is on
                 if(targetQueue->empty() || *_killflag) {continue;}
 
                 //grab task
-                _activetask = targetQueue->front();
+                _activetask = (targetQueue->front());
+
+                //std::cout << "adress of new task in thread" << _activetask << std::endl;
+
                 //pop task
                 targetQueue->pop();
 
@@ -53,28 +66,37 @@ namespace R_ATX
             //lock gone, task aquired
 
             //execute
-            { try{ _activetask._execute(); } 
-            catch(std::exception e) { } }
+            try { _activetask->_execute(); }
+            catch(std::exception e) { std::cout << e.what() << std::endl; }
+
+            try { delete _activetask; std::cout << "task deleted\n"; }
+            catch (std::exception e) { std::cout << e.what() << std::endl; };
 
             //done
         }
-        std::cout << ID << "terminated\n" << std::flush;
+        std::cout << ID << " terminated\n" << std::flush;
     }
     //contructor
-    ATXthreadPool::ATXthreadPool(int numofthreads, std::queue<_task>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
+    JATXthreadPool::JATXthreadPool(int numofthreads, std::queue<_task*>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
     {
+        std::cout << "begining thread core\n" << std::flush;
+
         this->_killflag = false;
 
         int tbuildit;
         for (tbuildit = 0; tbuildit != numofthreads; tbuildit++)
         {
-            this->threads.push_back(new std::thread(worker_thread, targetQueuein, targetQueuemtxin, targetQueuecvin, _taskflagin, this->_killflag));
+            this->threads.push_back(new std::thread(worker_thread, targetQueuein, targetQueuemtxin, targetQueuecvin, _taskflagin, &this->_killflag));
         }
+
+        this->_qcv = targetQueuecvin;
     }
     // deconstructor
-    ATXthreadPool::~ATXthreadPool()
+    JATXthreadPool::~JATXthreadPool()
     {
         this->_killflag = true;
+
+        this->_qcv->notify_all();
 
         std::vector<std::thread*>::iterator tdeconi;
         std::thread* holder;

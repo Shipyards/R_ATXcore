@@ -17,41 +17,55 @@
 #pragma once
 
 #include <vector>
+#include <map>
 #include <queue>
 #include <mutex>
 #include <condition_variable>
-#include "data.h"
-#include "task.h"
-#include "ATXthreadPool.h"
+#include "data.hpp"
+#include "task.hpp"
+#include "JATXthreadPool.hpp"
 
-namespace R_ATX
+namespace JATX
 {
-    class R_ATXcore
+    class R_JATXcore
     {
-    private:
-        ATXthreadPool* Tpool;
     public:
-        //array with all data for easy acess and save/load
-        std::vector<_data> dataStack;
+        static JATXthreadPool* Tpool;
+    /*public:*/
+        //array with all data & gaurds for easy acess and save/load
+        static std::map<UID*, _data*> dataStack;
         //datastack mutex
-        std::mutex datamtx;
+        static std::mutex* datamtx;
 
         //queue with all tasks to be completed by threadpool
-        std::queue<_task> taskQueue;
+        static std::queue<_task*> taskQueue;
         //queue mutex
-        std::mutex TQm;
+        static std::mutex* TQm;
         //condition variable for the queue
-        std::condition_variable TQcv;
+        static std::condition_variable* TQcv;
         //flag for task ready
-        bool taskflag;
+        static bool taskflag;
 
+
+        static bool init_threads(int);
+
+        static bool deinit_threads();
 
         //add a task to the task stack and notify the thread pool
-        void add_task(_task);
+        static bool add_task(_task*);
+
+        //add data to the stack
+        static bool add_data(_data*);
+    
+        //fetch data from the stack
+        static _data* fetch_data(UID);
+
+        //destroy data on the stack
+        static bool remove_data(UID);
         
-        //constructor
-        R_ATXcore(int);
-        //deconstructor
-        ~R_ATXcore();
+        ////constructor
+        //R_JATXcore(int);
+        ////deconstructor
+        //~R_JATXcore();
     };
 }

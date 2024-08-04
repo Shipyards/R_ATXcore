@@ -15,25 +15,27 @@
 */
 #pragma once
 
-#include <queue>
-#include <thread>
-#include <mutex>
-#include <condition_variable>
-#include "task.h"
+#include <iostream>
+#include "baseContainer.hpp"
+#include "UID.hpp"
 
-namespace R_ATX
+namespace JATX
 {
-    class ATXthreadPool
+    // data storage class [virtual]
+    class _data :
+        public _baseContainer
     {
-    private:
-        // this is the function that will run in the threads
-        void worker_thread(std::queue<_task>*, std::mutex*, std::condition_variable*, bool*, bool*);
-        std::vector<std::thread*> threads;
     public:
-        bool _killflag;
+        UID localUID;
         //constructor
-        ATXthreadPool(int, std::queue<_task>*, std::mutex*, std::condition_variable*, bool*);
+        _data() { this->localUID = *(new UID()); };
+        // get raw data
+        virtual char* _raw() = 0;
+        //serialize
+        virtual char* _serialize() = 0;
+        //deserialize
+        virtual bool _deserialize(char*) = 0;
         //deconstructor
-        ~ATXthreadPool();
+        ~_data() {};
     };
 }

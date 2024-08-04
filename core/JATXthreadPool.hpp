@@ -13,35 +13,28 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+#pragma once
 
-#include "R_ATXcore.h"
-#include "task.h"
-#include <mutex>
+#include <queue>
 #include <thread>
+#include <mutex>
 #include <condition_variable>
+#include "task.hpp"
 
-namespace R_ATX
+namespace JATX
 {
-    R_ATXcore::R_ATXcore(int tnum)
+    class JATXthreadPool
     {
-        this->Tpool = new ATXthreadPool(tnum, &this->taskQueue, &this->TQm, &this->TQcv, &this->taskflag);
-    }
-    void R_ATXcore::add_task(_task newtask)
-    {
-        //lock on to task queue mutex
-        { 
-            std::lock_guard<std::mutex> ulk(this->TQm); 
-
-            //workhere
-            this->taskQueue.push(newtask);
-
-            //signal go
-            this->taskflag = true;
-        }
-        this->TQcv.notify_all();
-    }
-    R_ATXcore::~R_ATXcore()
-    {
-        delete this->Tpool;
-    }
+    private:
+        std::vector<std::thread*> threads;
+    public:
+        //pointer to queue condition variable
+        std::condition_variable* _qcv;
+        //kill flag
+        bool _killflag;
+        //constructor
+        JATXthreadPool(int, std::queue<_task*>*, std::mutex*, std::condition_variable*, bool*);
+        //deconstructor
+        ~JATXthreadPool();
+    };
 }
