@@ -29,39 +29,43 @@ namespace JATX
 {
     class R_JATXcore
     {
-    private:
-        JATXthreadPool* Tpool;
     public:
+        static JATXthreadPool* Tpool;
+    /*public:*/
         //array with all data & gaurds for easy acess and save/load
-        std::map<UID*, _data*> dataStack;
+        static std::map<UID*, _data*> dataStack;
         //datastack mutex
-        std::mutex datamtx;
+        static std::mutex* datamtx;
 
         //queue with all tasks to be completed by threadpool
-        std::queue<_task*> taskQueue;
+        static std::queue<_task*> taskQueue;
         //queue mutex
-        std::mutex TQm;
+        static std::mutex* TQm;
         //condition variable for the queue
-        std::condition_variable TQcv;
+        static std::condition_variable* TQcv;
         //flag for task ready
-        bool taskflag;
+        static bool taskflag;
 
+
+        static bool init_threads(int);
+
+        static bool deinit_threads();
 
         //add a task to the task stack and notify the thread pool
-        bool add_task(_task*);
+        static bool add_task(_task*);
 
         //add data to the stack
-        bool add_data(_data*);
+        static bool add_data(_data*);
     
         //fetch data from the stack
-        _data* fetch_data(UID);
+        static _data* fetch_data(UID);
 
         //destroy data on the stack
-        bool remove_data(UID);
+        static bool remove_data(UID);
         
-        //constructor
-        R_JATXcore(int);
-        //deconstructor
-        ~R_JATXcore();
+        ////constructor
+        //R_JATXcore(int);
+        ////deconstructor
+        //~R_JATXcore();
     };
 }

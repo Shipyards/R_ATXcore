@@ -6,8 +6,6 @@
 
 #include <iostream>
 
-JATX::R_JATXcore* core = new JATX::R_JATXcore(7);
-
 int main()
 {
 	using namespace JATX;
@@ -24,20 +22,21 @@ int main()
 	test0->_execute();
 	delete test0;
 
+	R_JATXcore::init_threads(4);
 
 	//add task
 	testTask* test1 = new testTask(&i);
-	core->add_task(test1);
+	R_JATXcore::add_task(test1);
 	this_thread::sleep_for(chrono::seconds(1));
 	testTask* test2 = new testTask(&i);
-	core->add_task(test2);
+	R_JATXcore::add_task(test2);
 	this_thread::sleep_for(chrono::seconds(1));
 	testTask* test3 = new testTask(&i);
-	core->add_task(test3);
+	R_JATXcore::add_task(test3);
 
 	this_thread::sleep_for(std::chrono::seconds(1));
 
-	delete core;
+	R_JATXcore::deinit_threads();
 }
 
 

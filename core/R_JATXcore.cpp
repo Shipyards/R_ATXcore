@@ -22,38 +22,46 @@
 
 namespace JATX
 {
-    R_JATXcore::R_JATXcore(int tnum)
+    JATXthreadPool* R_JATXcore::Tpool = nullptr;
+    std::map<UID*, _data*> R_JATXcore::dataStack = std::map<UID*, _data*>();
+    std::mutex* R_JATXcore::datamtx = new std::mutex();
+    std::mutex* R_JATXcore::TQm = new std::mutex();
+    std::condition_variable* R_JATXcore::TQcv = new std::condition_variable;
+    std::queue<_task*> R_JATXcore::taskQueue = std::queue<_task*>();
+    bool R_JATXcore::taskflag = false;
+
+    bool R_JATXcore::init_threads(int tnum)
     {
-        this->taskflag = false;
-        this->Tpool = new JATXthreadPool(tnum, &this->taskQueue, &this->TQm, &this->TQcv, &this->taskflag);
+        Tpool = new JATXthreadPool(tnum, &taskQueue, TQm, TQcv, &taskflag);
+        return true;
     }
     bool R_JATXcore::add_task(_task* newtask)
     {
         std::cout << "adress of new task " << newtask << std::endl;
         //lock on to task queue mutex
         { 
-            std::lock_guard<std::mutex> ulk(this->TQm); 
+            std::lock_guard<std::mutex> ulk(*TQm); 
 
             //workhere
-            this->taskQueue.push(newtask);
+            taskQueue.push(newtask);
 
             //signal go
-            this->taskflag = true;
+            taskflag = true;
         }
-        this->TQcv.notify_all();
+        TQcv->notify_all();
         return true;
     }
     bool R_JATXcore::add_data(_data* newdata)
     {
-        this->datamtx.lock();
-        this->dataStack[&newdata->localUID] = newdata;
-        this->datamtx.unlock();
+        datamtx->lock();
+        dataStack[&newdata->localUID] = newdata;
+        datamtx->unlock();
         return true;
     }
     _data* R_JATXcore::fetch_data(UID ID)
     {
         std::map<UID*, _data*>::iterator datait;
-        for (datait = this->dataStack.begin(); datait != this->dataStack.end(); datait++)
+        for (datait = dataStack.begin(); datait != dataStack.end(); datait++)
         {
             if (*datait->first == ID)
             {
@@ -64,19 +72,20 @@ namespace JATX
     bool R_JATXcore::remove_data(UID ID)
     {
         std::map<UID*, _data*>::iterator datait;
-        for (datait = this->dataStack.begin(); datait != this->dataStack.end(); datait++)
+        for (datait = dataStack.begin(); datait != dataStack.end(); datait++)
         {
             if (*datait->first == ID)
             {
-                this->dataStack.erase(datait->first);
+                dataStack.erase(datait->first);
                 try { delete datait->second; }
                 catch (std::exception e) { std::cout << e.what() << std::endl; }
                 return true;
             }
         }
     }
-    R_JATXcore::~R_JATXcore()
+    bool R_JATXcore::deinit_threads()
     {
-        delete this->Tpool; // delete threadpool before deleting data
+        delete Tpool; // delete threadpool before deleting data
+        return true;
     }
 }
