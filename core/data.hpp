@@ -13,6 +13,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
+#ifdef MATHLIBRARY_EXPORTS
+#define R_JATXcore_API __declspec(dllexport)
+#else
+#define R_JATXcore_API __declspec(dllimport)
+#endif
+
 #pragma once
 
 #include <iostream>
@@ -22,7 +29,7 @@
 namespace JATX
 {
     // data storage class [virtual]
-    class _data :
+    R_JATXcore_API class _data :
         public _baseContainer
     {
     public:

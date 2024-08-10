@@ -14,12 +14,18 @@
    limitations under the License.
 */
 
+#ifdef MATHLIBRARY_EXPORTS
+#define R_JATXcore_API __declspec(dllexport)
+#else
+#define R_JATXcore_API __declspec(dllimport)
+#endif
+
 #pragma once
 
 namespace JATX
 {
     // base container [virtual]
-    class _baseContainer
+    R_JATXcore_API class _baseContainer
     {
     public:
         _baseContainer() {};

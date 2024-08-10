@@ -14,26 +14,8 @@
    limitations under the License.
 */
 
-#ifdef MATHLIBRARY_EXPORTS
-#define R_JATXcore_API __declspec(dllexport)
-#else
-#define R_JATXcore_API __declspec(dllimport)
-#endif
-
 #pragma once
 
-#include "baseContainer.hpp"
-#include <iostream>
-
-namespace JATX
-{
-    // processing container [virtual]
-    R_JATXcore_API class _task :
-        public _baseContainer
-    {
-    public:
-        _task() {}
-        virtual void _execute() = 0;
-        ~_task() {}
-    };
-}
+#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+// Windows Header Files
+#include <windows.h>

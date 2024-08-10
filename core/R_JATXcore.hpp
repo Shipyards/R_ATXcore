@@ -14,6 +14,12 @@
    limitations under the License.
 */
 
+#ifdef MATHLIBRARY_EXPORTS
+#define R_JATXcore_API __declspec(dllexport)
+#else
+#define R_JATXcore_API __declspec(dllimport)
+#endif
+
 #pragma once
 
 #include <vector>
@@ -27,7 +33,7 @@
 
 namespace JATX
 {
-    class R_JATXcore
+    R_JATXcore_API class R_JATXcore
     {
     public:
         static JATXthreadPool* Tpool;

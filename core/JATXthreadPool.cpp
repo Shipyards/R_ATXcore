@@ -21,9 +21,6 @@
 #include <iostream>
 #include "task.hpp"
 
-
-
-
 namespace JATX
 {
     void test(int b)
