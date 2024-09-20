@@ -14,6 +14,13 @@
    limitations under the License.
 */
 
+#ifdef R_JATXCORE_EXPORTS
+#pragma message("MATHLIBEXPT is defined")
+#define R_JATXcore_API __declspec(dllexport)
+#else
+#define R_JATXcore_API __declspec(dllimport)
+#endif
+
 #pragma once
 
 #include <vector>
@@ -22,16 +29,18 @@
 #include <mutex>
 #include <condition_variable>
 #include "data.hpp"
+#include "pch.h"
+#include "framework.h"
 #include "task.hpp"
 #include "JATXthreadPool.hpp"
 
 namespace JATX
 {
-    class R_JATXcore
+    /*R_JATXcore_API*/ class R_JATXcore
     {
-    public:
+    private:
         static JATXthreadPool* Tpool;
-    /*public:*/
+    public:
         //array with all data & gaurds for easy acess and save/load
         static std::map<UID*, _data*> dataStack;
         //datastack mutex
@@ -68,4 +77,18 @@ namespace JATX
         ////deconstructor
         //~R_JATXcore();
     };
+
+    //functions to access the class
+    
+    //initalize the core with its threads
+    extern "C" R_JATXcore_API void core_init(int);
+
+    //deinitalize the core and join its threads
+    extern "C" R_JATXcore_API void core_deinit();
+
+    //add a task to the core
+    extern "C" R_JATXcore_API void core_addtask(_task*);
+
+    //add a datapack to the datastack
+    extern "C" R_JATXcore_API void core_adddata(_data*);
 }

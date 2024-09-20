@@ -5,7 +5,7 @@
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-	   http://www.apache.org/licenses/LICENSE-2.0
+       http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,40 +22,37 @@
 
 #pragma once
 
-#include <mutex>
+#include <random>
 
 namespace JATX
 {
-	R_JATXcore_API class ticker
-	{
-	private:
-		int ticks;
-		std::mutex mtx;
-	public:
-		ticker() : ticks(0)
-		{
-			//hi
-			int b = 10;
-		}
-		void operator++()
-		{
-			this->mtx.lock();
-			this->ticks++;
-			this->mtx.unlock();
-		}
-		void operator--()
-		{
-			this->mtx.lock();
-			this->ticks--;
-			this->mtx.unlock();
-		}
-		int _get()
-		{
-			int placeholder;
-			this->mtx.lock();
-			placeholder = this->ticks;
-			this->mtx.unlock();
-			return placeholder;
-		}
-	};
+    std::string rawUIDgen(); //Note: not garunteed unique, however statistically improbable, this is experimental
+
+    class UID
+    {
+    public:
+        std::string actual;
+        
+        UID()
+        {
+            this->actual = rawUIDgen();
+        }
+        UID(std::string raw)
+        {
+            this->actual = raw;
+        }
+        bool operator==(UID& compare)
+        {
+            if(this->actual == compare.actual)
+            {
+                return true;
+            }
+        }
+        ~UID()
+        {
+
+        }
+    };
+
+    
 }

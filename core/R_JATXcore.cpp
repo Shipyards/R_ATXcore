@@ -14,6 +14,9 @@
    limitations under the License.
 */
 
+#define R_JATXcore_EXPORTS
+
+#include "pch.h"
 #include "R_JATXcore.hpp"
 #include "task.hpp"
 #include <mutex>
@@ -37,7 +40,7 @@ namespace JATX
     }
     bool R_JATXcore::add_task(_task* newtask)
     {
-        std::cout << "adress of new task " << newtask << std::endl;
+        //std::cout << "adress of new task " << newtask << std::endl;
         //lock on to task queue mutex
         { 
             std::lock_guard<std::mutex> ulk(*TQm); 
@@ -88,4 +91,28 @@ namespace JATX
         delete Tpool; // delete threadpool before deleting data
         return true;
     }
+
+    //functions to interface with the core
+
+    //intialize all the threads on the core
+    R_JATXcore_API void core_init(int threadcount)
+    {
+        R_JATXcore::init_threads(threadcount);
+    }
+    // Deintialize all the threads on the core
+    R_JATXcore_API void core_deinit()
+    {
+        R_JATXcore::deinit_threads();
+    }
+    //add a task to the active queue on the core
+    R_JATXcore_API void core_addtask(_task* newtask)
+    {
+        R_JATXcore::add_task(newtask);
+    }
+    //adds a datapacket to the data stack for global access and serialization
+    R_JATXcore_API void core_adddata(_data* newdata)
+    {
+        R_JATXcore::add_data(newdata);
+    }
+
 }

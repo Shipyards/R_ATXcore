@@ -14,6 +14,12 @@
    limitations under the License.
 */
 
+//#ifdef MATHLIBRARY_EXPORTS
+//#define R_JATXcore_API __declspec(dllexport)
+//#else
+//#define R_JATXcore_API __declspec(dllimport)
+//#endif
+
 #pragma once
 
 #include "baseContainer.hpp"
@@ -22,7 +28,7 @@
 namespace JATX
 {
     // processing container [virtual]
-    class _task :
+    /*R_JATXcore_API*/ class _task :
         public _baseContainer
     {
     public:

@@ -24,6 +24,8 @@ int main()
 
 	R_JATXcore::init_threads(4);
 
+	this_thread::sleep_for(chrono::seconds(1));
+
 	//add task
 	testTask* test1 = new testTask(&i);
 	R_JATXcore::add_task(test1);
