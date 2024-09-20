@@ -14,7 +14,7 @@
    limitations under the License.
 */
 
-#ifdef MATHLIBRARY_EXPORTS
+#ifdef R_JATXcore_EXPORTS
 #define R_JATXcore_API __declspec(dllexport)
 #else
 #define R_JATXcore_API __declspec(dllimport)
@@ -30,7 +30,7 @@
 
 namespace JATX
 {
-    R_JATXcore_API class JATXthreadPool
+    /*R_JATXcore_API*/ class JATXthreadPool
     {
     private:
         std::vector<std::thread*> threads;

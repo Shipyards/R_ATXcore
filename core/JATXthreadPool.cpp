@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+#include "pch.h"
 #include "JATXthreadPool.hpp"
 #include <queue>
 #include <thread>
@@ -23,10 +24,6 @@
 
 namespace JATX
 {
-    void test(int b)
-    {
-        std::cout << "hi\n" << std::flush;
-    }
     //thread function
     void worker_thread(std::queue<_task*>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool* _killflag)
     {
@@ -66,7 +63,7 @@ namespace JATX
             try { _activetask->_execute(); }
             catch(std::exception e) { std::cout << e.what() << std::endl; }
 
-            try { delete _activetask; std::cout << "task deleted\n"; }
+            try { delete _activetask; /*std::cout << "task deleted\n";*/ }
             catch (std::exception e) { std::cout << e.what() << std::endl; };
 
             //done

@@ -14,19 +14,14 @@
    limitations under the License.
 */
 
-#ifdef MATHLIBRARY_EXPORTS
-#define R_JATXcore_API __declspec(dllexport)
-#else
-#define R_JATXcore_API __declspec(dllimport)
-#endif
 
-#pragma once
-
-#include <random>
+// dllmain.cpp : Defines the entry point for the DLL application.
+#include "pch.h"
+#include "UID.h"
 
 namespace JATX
 {
-    static std::string rawUIDgen() //Note: not garunteed unique, however statistically improbable, this is experimental
+    std::string rawUIDgen()
     {
         const char hexTemp[16] = "0123456789ABCEF";
         std::string uniqueID = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
@@ -43,32 +38,4 @@ namespace JATX
         }
         return uniqueID;
     }
-
-    class UID
-    {
-    public:
-        std::string actual;
-        
-        UID()
-        {
-            this->actual = rawUIDgen();
-        }
-        UID(std::string raw)
-        {
-            this->actual = raw;
-        }
-        bool operator==(UID& compare)
-        {
-            if(this->actual == compare.actual)
-            {
-                return true;
-            }
-        }
-        ~UID()
-        {
-
-        }
-    };
-
-    
 }
