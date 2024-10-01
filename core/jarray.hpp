@@ -66,14 +66,14 @@ namespace JATX
 		R_jarray(int newsize) : size(newsize)
 		{
 			this->internalarray = new containertype * [newsize];
-			for (int i = 0; i != newsize - 1; i++)
+			for (int i = 0; i != newsize; i++)
 			{
 				this->internalarray[i] = nullptr;
 			}
 		}
 		~R_jarray()
 		{
-			for (int i = 0; i != this->size - 1; i++)
+			for (int i = 0; i != this->size; i++)
 			{
 				if (this->internalarray[i] == nullptr) { continue; }
 				delete this->internalarray[i];
@@ -97,9 +97,9 @@ namespace JATX
 	{
 	private:
 		containertype* internalarray;
+		std::mutex internalmtx;
 		int size;
 	public:
-		std::mutex internalmtx;
 		TS_R_jarray(int newsize) : size(newsize)
 		{
 			this->internalmtx.lock();
@@ -112,27 +112,35 @@ namespace JATX
 			delete[] this->internalarray;
 			this->internalmtx.unlock();
 		}
-		containertype read(int access) 
+		void _lock() { this->internalmtx.lock(); }
+		void _unlock() { this->internalmtx.unlock(); }
+		containertype read(int access) //returns copy of container
 		{ 
 			containertype placeholder;
 
 			//lock while copying the object
-			this->internalmtx.lock();
+			this->_lock();
 			//copy object
 			placeholder = this->internalarray[access];
 			//unlock once object is copied
-			this->internalmtx.unlock();
+			this->_unlock();
 
 			return placeholder;
 		}
-		bool write(int access, containertype writethis) 
+		containertype& fetch(int access) //returns address of container
+		{
+			this->_lock();
+
+			return this->internalarray[access];
+		}
+		bool write(int access, containertype writethis) //writes container
 		{ 
 			//lock while writing
 			this->internalmtx.lock();
 			//write
 			this->internalarray[access] = writethis;
 			//release lock after writing
-			this->internalmtx.unlock();
+			this->_unlock();
 
 			return true; 
 		}
@@ -159,9 +167,9 @@ namespace JATX
 	{
 	private:
 		containertype** internalarray;
+		std::mutex internalmtx;
 		int size;
 	public:
-		std::mutex internalmtx;
 		TS_R_jarray(int newsize) : size(newsize)
 		{
 			this->internalmtx.lock();
@@ -183,27 +191,35 @@ namespace JATX
 			delete[] this->internalarray;
 			this->internalmtx.unlock();
 		}
-		containertype* read(int access) 
+		void _lock() { this->internalmtx.lock(); }
+		void _unlock() { this->internalmtx.unlock(); }
+		containertype* read(int access) //returns copy of container
 		{ 
 			containertype* placeholder;
 
 			//aquire lock while copying adress
-			this->internalmtx.lock();
+			this->_lock();
 			//copy adress
 			placeholder = this->internalarray[access];
 			//release lock once adress is copied
-			this->internalmtx.unlock();
+			this->_unlock();
 
 			return placeholder;
+		}
+		containertype*& fetch(int access) //returns address of container
+		{
+			this->_lock();
+
+			return this->internalarray[access];
 		}
 		bool write(int access, containertype* writethis) 
 		{ 
 			//lock while writing
-			this->internalmtx.lock();
+			this->_lock();
 			//write
 			this->internalarray[access] = writethis; 
 			//unlock after writing
-			this->internalmtx.unlock();
+			this->_unlock();
 
 			return true; 
 		}

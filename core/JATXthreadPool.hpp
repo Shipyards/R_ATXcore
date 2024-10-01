@@ -27,20 +27,22 @@
 #include <mutex>
 #include <condition_variable>
 #include "task.hpp"
+#include "JATXthread.h"
+#include "jarray.hpp"
+#include "flag.hpp"
 
 namespace JATX
 {
     /*R_JATXcore_API*/ class JATXthreadPool
     {
     private:
-        std::vector<std::thread*> threads;
+        R_jarray<JATXthread*>* threads;
+        int size;
     public:
-        //pointer to queue condition variable
-        std::condition_variable* _qcv;
-        //kill flag
-        bool _killflag;
+        //arguements of the threads
+        t_args _args;
         //constructor
-        JATXthreadPool(int, std::queue<_task*>*, std::mutex*, std::condition_variable*, bool*);
+        JATXthreadPool(int, std::queue<_task*>*, std::mutex*, std::condition_variable*, flag*);
         //deconstructor
         ~JATXthreadPool();
     };

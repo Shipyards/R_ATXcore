@@ -28,14 +28,14 @@ namespace JATX
     JATXthreadPool* R_JATXcore::Tpool = nullptr;
     std::map<UID*, _data*> R_JATXcore::dataStack = std::map<UID*, _data*>();
     std::mutex* R_JATXcore::datamtx = new std::mutex();
-    std::mutex* R_JATXcore::TQm = new std::mutex();
+    std::mutex* R_JATXcore::TQmtx = new std::mutex();
     std::condition_variable* R_JATXcore::TQcv = new std::condition_variable;
     std::queue<_task*> R_JATXcore::taskQueue = std::queue<_task*>();
-    bool R_JATXcore::taskflag = false;
+    flag* R_JATXcore::taskflag = new flag();
 
     bool R_JATXcore::init_threads(int tnum)
     {
-        Tpool = new JATXthreadPool(tnum, &taskQueue, TQm, TQcv, &taskflag);
+        Tpool = new JATXthreadPool(tnum, &taskQueue, TQmtx, TQcv, taskflag);
         return true;
     }
     bool R_JATXcore::add_task(_task* newtask)
@@ -43,13 +43,13 @@ namespace JATX
         //std::cout << "adress of new task " << newtask << std::endl;
         //lock on to task queue mutex
         { 
-            std::lock_guard<std::mutex> ulk(*TQm); 
+            std::lock_guard<std::mutex> ulk(*TQmtx); 
 
             //workhere
             taskQueue.push(newtask);
 
             //signal go
-            taskflag = true;
+            taskflag->_on();
         }
         TQcv->notify_all();
         return true;
@@ -89,6 +89,9 @@ namespace JATX
     bool R_JATXcore::deinit_threads()
     {
         delete Tpool; // delete threadpool before deleting data
+
+        delete datamtx, TQmtx, TQcv, taskflag;
+
         return true;
     }
 
@@ -113,6 +116,11 @@ namespace JATX
     R_JATXcore_API void core_adddata(_data* newdata)
     {
         R_JATXcore::add_data(newdata);
+    }
+    //retrwive a datapacket from the data stack
+    R_JATXcore_API void core_fetchdata(UID access, _data*& returnptr)
+    {
+        returnptr = R_JATXcore::fetch_data(access);
     }
 
 }

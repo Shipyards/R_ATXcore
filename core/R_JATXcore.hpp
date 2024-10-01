@@ -49,11 +49,11 @@ namespace JATX
         //queue with all tasks to be completed by threadpool
         static std::queue<_task*> taskQueue;
         //queue mutex
-        static std::mutex* TQm;
+        static std::mutex* TQmtx;
         //condition variable for the queue
         static std::condition_variable* TQcv;
         //flag for task ready
-        static bool taskflag;
+        static flag* taskflag;
 
 
         static bool init_threads(int);
@@ -91,4 +91,7 @@ namespace JATX
 
     //add a datapack to the datastack
     extern "C" R_JATXcore_API void core_adddata(_data*);
+
+    //retreive a datapack from the stack
+    extern "C" R_JATXcore_API void core_fetchdata(UID, _data*&);
 }

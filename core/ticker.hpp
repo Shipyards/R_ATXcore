@@ -26,16 +26,15 @@
 
 namespace JATX
 {
-	R_JATXcore_API class ticker
+	class ticker
 	{
 	private:
 		int ticks;
-		std::mutex mtx;
 	public:
+		std::mutex mtx;
 		ticker() : ticks(0)
 		{
-			//hi
-			int b = 10;
+			
 		}
 		void operator++()
 		{
@@ -49,7 +48,7 @@ namespace JATX
 			this->ticks--;
 			this->mtx.unlock();
 		}
-		int _get()
+		int _read() // returns copy of value
 		{
 			int placeholder;
 			this->mtx.lock();

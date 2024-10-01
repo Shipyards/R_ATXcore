@@ -24,80 +24,36 @@
 
 namespace JATX
 {
-    //thread function
-    void worker_thread(std::queue<_task*>* targetQueue, std::mutex* targetQueuemtx, std::condition_variable* targetQueuecv, bool* _taskflag, bool* _killflag)
-    {
-        std::thread::id ID = std::this_thread::get_id();
-        _task* _activetask;
-
-        std::cout << ID << " initalized\n" << std::flush;
-
-        while(!*_killflag)
-        {
-            {
-                //std::cout << "waiting\n" << std::flush;
-
-                //wait
-                std::unique_lock<std::mutex> lk(*targetQueuemtx);
-                targetQueuecv->wait(lk, [&]{ return *_taskflag || *_killflag; });
-
-                //std::cout << "done waiting\n" << std::flush;
-
-                //checks if the target is empty or the kill flag is on
-                if(targetQueue->empty() || *_killflag) {continue;}
-
-                //grab task
-                _activetask = (targetQueue->front());
-
-                //std::cout << "adress of new task in thread" << _activetask << std::endl;
-
-                //pop task
-                targetQueue->pop();
-
-                //turn off flag
-                *_taskflag = false;
-            }
-            //lock gone, task aquired
-
-            //execute
-            try { _activetask->_execute(); }
-            catch(std::exception e) { std::cout << e.what() << std::endl; }
-
-            try { delete _activetask; /*std::cout << "task deleted\n";*/ }
-            catch (std::exception e) { std::cout << e.what() << std::endl; };
-
-            //done
-        }
-        std::cout << ID << " terminated\n" << std::flush;
-    }
     //contructor
-    JATXthreadPool::JATXthreadPool(int numofthreads, std::queue<_task*>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, bool* _taskflagin)
+    JATXthreadPool::JATXthreadPool(int numofthreads, std::queue<_task*>* targetQueuein, std::mutex* targetQueuemtxin, std::condition_variable* targetQueuecvin, flag* _taskflagin) : threads(new R_jarray<JATXthread*>(numofthreads)), size(numofthreads)
     {
-        std::cout << "begining thread core\n" << std::flush;
+        std::cout << "starting thread pool\n" << std::flush;
 
-        this->_killflag = false;
+        this->_args.taskqueue = targetQueuein;
+        this->_args.tqu_mtx = targetQueuemtxin;
+        this->_args.tqu_cv = targetQueuecvin;
+        this->_args.taskflag = _taskflagin;
+        this->_args.active_threads = new ticker();
 
         int tbuildit;
         for (tbuildit = 0; tbuildit != numofthreads; tbuildit++)
         {
-            this->threads.push_back(new std::thread(worker_thread, targetQueuein, targetQueuemtxin, targetQueuecvin, _taskflagin, &this->_killflag));
+            this->threads->operator[](tbuildit) = new JATXthread(&this->_args);
         }
 
-        this->_qcv = targetQueuecvin;
+        //wait until ticker matches {wait until all threads have checked in and are ready to proccess}
+        while (this->_args.active_threads->_read() != numofthreads) { std::this_thread::sleep_for(std::chrono::milliseconds(10)); }
+
+        std::cout << "thread pool initalized\n" << std::flush;
     }
     // deconstructor
     JATXthreadPool::~JATXthreadPool()
     {
-        this->_killflag = true;
+        delete this->threads;
 
-        this->_qcv->notify_all();
+        //wait until ticker matches {wait until all threads have checked in and are teminated}
+        while (this->_args.active_threads->_read() != 0) { std::this_thread::sleep_for(std::chrono::milliseconds(10)); }
 
-        std::vector<std::thread*>::iterator tdeconi;
-        std::thread* holder;
-        for(tdeconi = this->threads.begin(); tdeconi != this->threads.end(); tdeconi++)
-        {
-            holder = *tdeconi;
-            holder->join();
-        }
+        delete this->_args.active_threads;
     }
 }

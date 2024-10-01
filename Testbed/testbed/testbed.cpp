@@ -8,28 +8,27 @@
 
 int main()
 {
-    JATX::core_init(4);
+    JATX::core_init(5);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    JATX::core_addtask(new sayhi());
+    for (int i = 0; i != 30; i++)
+    {
+        JATX::core_addtask(new sayhi());
+    }
 
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-
-    JATX::core_addtask(new sayhi());
-
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::this_thread::sleep_for(std::chrono::seconds(3));
 
     JATX::core_deinit();
 
-    JATX::R_jarray<int>* orangesize = new JATX::R_jarray<int>(5);
+    /*JATX::R_jarray<int>* orangesize = new JATX::R_jarray<int>(5);
 
     orangesize->operator[](3) = 5;
     orangesize->operator[](4) = 7;
 
     std::cout << orangesize->operator[](4) << std::endl;
 
-    delete orangesize;
+    delete orangesize;*/
     
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
