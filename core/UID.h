@@ -47,6 +47,10 @@ namespace JATX
             {
                 return true;
             }
+            else
+            {
+               return false;
+            }
         }
         ~UID()
         {
